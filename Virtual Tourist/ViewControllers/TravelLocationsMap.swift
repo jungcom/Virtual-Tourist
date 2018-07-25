@@ -19,13 +19,13 @@ class TravelLocationsMap: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpMapView()
         // Do any additional setup after loading the view, typically from a nib.
         /*let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
         do {
             let pinsFrom = try CoreDataPersistence.context.fetch(fetchRequest)
             self.pins = pinsFrom
         } catch {}*/
-        
     }
 
     @IBAction func addPinOnTap(_ sender: UITapGestureRecognizer){
@@ -94,6 +94,27 @@ extension TravelLocationsMap: MKMapViewDelegate{
         }
         
         return pinView
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print("Region changed and saved")
+        UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: "savedLongitudeDelta")
+        UserDefaults.standard.set(mapView.region.span.latitudeDelta, forKey: "savedLatitudeDelta")
+        UserDefaults.standard.set(mapView.region.center.longitude, forKey: "savedLongitude")
+        UserDefaults.standard.set(mapView.region.center.latitude, forKey: "savedLatitude")
+    }
+    
+    func setUpMapView(){
+        let longitudeDelta = UserDefaults.standard.double(forKey: "savedLongitudeDelta")
+        let latitudeDelta = UserDefaults.standard.double(forKey: "savedLatitudeDelta")
+        let longitude = UserDefaults.standard.double(forKey: "savedLongitude")
+        let latitude = UserDefaults.standard.double(forKey: "savedLatitude")
+        
+        let span = MKCoordinateSpanMake(latitudeDelta, longitudeDelta)
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let region = MKCoordinateRegionMake(location, span)
+        
+        mapView.setRegion(region, animated: false)
     }
 }
 
