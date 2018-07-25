@@ -24,6 +24,7 @@
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="5XQ-Wb-U8w"/>
                                     <outletCollection property="gestureRecognizers" destination="L0o-Om-JDU" appends="YES" id="jdN-0D-Fjw"/>
+                                    <outletCollection property="gestureRecognizers" destination="T5V-Nr-iGv" appends="YES" id="FP0-rf-6Jv"/>
                                 </connections>
                             </mapView>
                         </subviews>
@@ -43,9 +44,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="1" id="L0o-Om-JDU">
                     <connections>
-                        <action selector="addPinOnTouch:" destination="BYZ-38-t0r" id="4B0-dG-3SF"/>
+                        <action selector="addPinOnLongPress:" destination="BYZ-38-t0r" id="gEB-Gc-92X"/>
                     </connections>
                 </pongPressGestureRecognizer>
+                <tapGestureRecognizer id="T5V-Nr-iGv">
+                    <connections>
+                        <action selector="addPinOnTap:" destination="BYZ-38-t0r" id="KxC-Xy-b7w"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
         </scene>
     </scenes>
