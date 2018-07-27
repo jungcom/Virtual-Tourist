@@ -14,6 +14,7 @@ class TravelLocationsMap: UIViewController, UIGestureRecognizerDelegate {
 
     var pins = [Pin]()
     var pinned = false
+    var passedCoordinate : CLLocationCoordinate2D?
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -75,7 +76,15 @@ class TravelLocationsMap: UIViewController, UIGestureRecognizerDelegate {
         self.mapView.addAnnotation(annotation)
         print("added Pin \(mapView.annotations.count)")
     }
-
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("prepare segue")
+        if let destin = segue.destination as? UINavigationController {
+            let photoAblumController = destin.viewControllers.first as? PhotoAlbumCollectionViewController
+            photoAblumController?.latitude = passedCoordinate?.latitude
+            photoAblumController?.longitude = passedCoordinate?.longitude
+        }
+    }
 }
 
 
@@ -110,8 +119,11 @@ extension TravelLocationsMap: MKMapViewDelegate{
     // to the URL specified in the annotationViews subtitle property.
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            //MARK: TODO - perform segue to PhotoAlbumViewController
+            //MARK: TODO - perform segue to PhotoAlbumViewController and pass the current pin
+            
             print("Move To Photo Album")
+            passedCoordinate = view.annotation?.coordinate
+            performSegue(withIdentifier: "toPhotoAlbum", sender: self)
         }
     }
     
@@ -141,5 +153,7 @@ extension TravelLocationsMap: MKMapViewDelegate{
             self.mapView.addAnnotation(annotation)
         }
     }
+    
+    
 }
 
