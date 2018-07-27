@@ -16,6 +16,7 @@
 		4EAB353D2108248B00C3C1BE /* CoreDataPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB353C2108248B00C3C1BE /* CoreDataPersistence.swift */; };
 		4EAB35452108FCF400C3C1BE /* Pin+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB35432108FCF400C3C1BE /* Pin+CoreDataClass.swift */; };
 		4EAB35462108FCF400C3C1BE /* Pin+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB35442108FCF400C3C1BE /* Pin+CoreDataProperties.swift */; };
+		4EAB3548210BB64500C3C1BE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3547210BB64500C3C1BE /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		4EAB353C2108248B00C3C1BE /* CoreDataPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPersistence.swift; sourceTree = "<group>"; };
 		4EAB35432108FCF400C3C1BE /* Pin+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataClass.swift"; sourceTree = "<group>"; };
 		4EAB35442108FCF400C3C1BE /* Pin+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pin+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		4EAB3547210BB64500C3C1BE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				4E2C6C1221067B5D008B9ECA /* TravelLocationsMap.swift */,
+				4EAB3547210BB64500C3C1BE /* PhotoAlbumViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EAB353D2108248B00C3C1BE /* CoreDataPersistence.swift in Sources */,
+				4EAB3548210BB64500C3C1BE /* PhotoAlbumViewController.swift in Sources */,
 				4EAB35462108FCF400C3C1BE /* Pin+CoreDataProperties.swift in Sources */,
 				4EAB35452108FCF400C3C1BE /* Pin+CoreDataClass.swift in Sources */,
 				4E2C6C1321067B5D008B9ECA /* TravelLocationsMap.swift in Sources */,
