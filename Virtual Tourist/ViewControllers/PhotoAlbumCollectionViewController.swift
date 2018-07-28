@@ -27,6 +27,15 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        if let longitude = longitude, let latitude = latitude{
+            FlickrClient.sharedInstance().downloadImages(longitude: longitude, latitude: latitude) { (success, err) in
+                if success{
+                    print("Download Successful")
+                } else {
+                    print("Download Unsuccessful")
+                }
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
