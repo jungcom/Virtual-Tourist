@@ -13,7 +13,7 @@ class FlickrClient : NSObject{
     var latitude:Double?
     var longitude:Double?
     
-    func downloadImages(longitude: Double, latitude: Double, completionHandlerForDownloadingImage : @escaping (_ success:Bool, _ error:String? ) -> Void){
+    func downloadImages(longitude: Double, latitude: Double, completionHandlerForDownloadingImage : @escaping (_ success:Bool,_ data: Response, _ error:String? ) -> Void){
         
         self.latitude = latitude
         self.longitude = longitude
@@ -59,13 +59,8 @@ class FlickrClient : NSObject{
             do{
                 let response = try JSONDecoder().decode(Response.self, from: data)
                 
-                
-                //MARK: TODO - Save image Data to Core Data Stack
-                //save image data from url
-                let imageURL = URL(string: response.photos.photo[0].url_m!)
-                if let imageData = try? Data(contentsOf: imageURL!) {
-                    
-                }
+                //return with response object
+                completionHandlerForDownloadingImage(true, response, nil)
                 
             } catch let jsonErr{
                 print("Error serializing json data : \(jsonErr)")

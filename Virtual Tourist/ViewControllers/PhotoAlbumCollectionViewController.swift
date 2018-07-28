@@ -9,28 +9,27 @@
 import UIKit
 import CoreData
 
-private let reuseIdentifier = "Cell"
+private let reuseIdentifier = "PhotoAlbumCollectionViewCell"
 
 class PhotoAlbumCollectionViewController: UICollectionViewController {
     
     var latitude : Double? = nil
     var longitude : Double? = nil
+    var arrPhoto = [NSData]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("latitude : \(latitude)")
-        print("longitude : \(longitude)")
+        print("latitude : \(latitude ?? 0.0)")
+        print("longitude : \(longitude ?? 0.0)")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
         // Do any additional setup after loading the view.
         if let longitude = longitude, let latitude = latitude{
-            FlickrClient.sharedInstance().downloadImages(longitude: longitude, latitude: latitude) { (success, err) in
+            FlickrClient.sharedInstance().downloadImages(longitude: longitude, latitude: latitude) { (success, response, err) in
                 if success{
                     print("Download Successful")
+                    self.saveImages(response)
                 } else {
                     print("Download Unsuccessful")
                 }
@@ -38,6 +37,28 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         }
     }
 
+    //save Images to arrPhotos
+    func saveImages(_ response:Response){
+        for i in 0...15{
+            print(response.photos.photo[i].url_m ?? "No URL")
+            
+            if let urlString = response.photos.photo[i].url_m {
+                let imageURL = URL(string: urlString)
+                
+                //convert url into image data
+                if let imageData = try? NSData(contentsOf: imageURL!) {
+                    print("appended data to array")
+                    arrPhoto.append(imageData!)
+                }
+            }
+        }
+        
+        //Update UI
+        performUIUpdatesOnMain {
+            self.collectionView?.reloadData()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -63,13 +84,15 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 1
+        return arrPhoto.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoAlbumCollectionViewCell
     
         // Configure the cell
+        
+        cell.imageView.image = UIImage(data:arrPhoto[indexPath.row] as Data)
     
         return cell
     }

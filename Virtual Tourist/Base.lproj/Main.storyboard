@@ -83,13 +83,27 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="3Tn-DE-3FR">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PhotoAlbumCollectionViewCell" id="3Tn-DE-3FR" customClass="PhotoAlbumCollectionViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="126" height="125"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="126" height="125"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKs-3r-yXc">
+                                            <rect key="frame" x="0.0" y="0.0" width="126" height="125"/>
+                                        </imageView>
+                                    </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="DKs-3r-yXc" secondAttribute="bottom" id="AxG-qt-zcI"/>
+                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="leading" secondItem="3Tn-DE-3FR" secondAttribute="leading" id="ZDR-QW-9je"/>
+                                    <constraint firstAttribute="trailing" secondItem="DKs-3r-yXc" secondAttribute="trailing" id="aAL-0t-SeB"/>
+                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="top" secondItem="3Tn-DE-3FR" secondAttribute="top" id="nBv-H3-1EU"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="DKs-3r-yXc" id="XBy-kX-0mk"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
