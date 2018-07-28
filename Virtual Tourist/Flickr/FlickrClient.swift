@@ -53,9 +53,6 @@ class FlickrClient : NSObject{
             }
             
             //Parse the Data using Decodable
-            let dataString = String(data: data, encoding: .utf8)
-            print(dataString)
-            
             do{
                 let response = try JSONDecoder().decode(Response.self, from: data)
                 

@@ -75,7 +75,7 @@
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="BGz-ti-65S">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pQ0-ba-OY5">
                             <size key="itemSize" width="126" height="125"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -90,16 +90,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="126" height="125"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKs-3r-yXc">
-                                            <rect key="frame" x="0.0" y="0.0" width="126" height="125"/>
+                                        <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKs-3r-yXc">
+                                            <rect key="frame" x="13" y="13" width="106" height="112"/>
                                         </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="DKs-3r-yXc" secondAttribute="bottom" id="AxG-qt-zcI"/>
-                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="leading" secondItem="3Tn-DE-3FR" secondAttribute="leading" id="ZDR-QW-9je"/>
-                                    <constraint firstAttribute="trailing" secondItem="DKs-3r-yXc" secondAttribute="trailing" id="aAL-0t-SeB"/>
-                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="top" secondItem="3Tn-DE-3FR" secondAttribute="top" id="nBv-H3-1EU"/>
+                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="leading" secondItem="3Tn-DE-3FR" secondAttribute="leading" constant="13" id="ZDR-QW-9je"/>
+                                    <constraint firstAttribute="trailing" secondItem="DKs-3r-yXc" secondAttribute="trailing" constant="7" id="aAL-0t-SeB"/>
+                                    <constraint firstItem="DKs-3r-yXc" firstAttribute="top" secondItem="3Tn-DE-3FR" secondAttribute="top" constant="13" id="nBv-H3-1EU"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="imageView" destination="DKs-3r-yXc" id="XBy-kX-0mk"/>

@@ -14,7 +14,7 @@ class TravelLocationsMap: UIViewController, UIGestureRecognizerDelegate {
 
     var pins = [Pin]()
     var pinned = false
-    var passedCoordinate : CLLocationCoordinate2D?
+    var passedPin : Pin?
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -51,40 +51,64 @@ class TravelLocationsMap: UIViewController, UIGestureRecognizerDelegate {
     }
     
     fileprivate func addPins(_ sender: UIGestureRecognizer) {
+        //find current
         let location = sender.location(in: mapView)
         let locationCoordinate = self.mapView.convert(location, toCoordinateFrom: self.mapView)
 
-        ///////// Saving the pin with Core Data /////////
-        let pin = Pin(context: CoreDataPersistence.context)
-        pin.latitude = locationCoordinate.latitude
-        pin.longitude = locationCoordinate.longitude
-        CoreDataPersistence.saveContext()
-        //CoreDataPersistence.context.a(pin)
-        
-        pins.append(pin)
-         
-        mapView.reloadInputViews()
-        
-        ///////////////////////////////////////////
-        
+        //create annotation
         let annotation = MKPointAnnotation()
-        
         annotation.coordinate = locationCoordinate
-        annotation.title = "Hi"
-        annotation.subtitle = "Anthony Lee"
         
-        self.mapView.addAnnotation(annotation)
-        print("added Pin \(mapView.annotations.count)")
+        let pinClLocation = CLLocation(latitude: locationCoordinate.latitude, longitude: locationCoordinate.longitude)
+        lookUpLocationName(clLocation: pinClLocation) { (pinClPlacemark) in
+            annotation.title = pinClPlacemark?.name
+            self.mapView.addAnnotation(annotation)
+            
+            ///////// MARK: Saving the pin with Core Data /////////
+            let pin = Pin(context: CoreDataPersistence.context)
+            pin.latitude = locationCoordinate.latitude
+            pin.longitude = locationCoordinate.longitude
+            pin.name = pinClPlacemark?.name
+            CoreDataPersistence.saveContext()
+            /////////////////////////////////////////////////
+            
+            //Update UI
+            self.pins.append(pin)
+            self.mapView.reloadInputViews()
+
+            
+        }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         print("prepare segue")
         if let destin = segue.destination as? UINavigationController {
             let photoAblumController = destin.viewControllers.first as? PhotoAlbumCollectionViewController
-            photoAblumController?.latitude = passedCoordinate?.latitude
-            photoAblumController?.longitude = passedCoordinate?.longitude
+            photoAblumController?.pin = passedPin
         }
     }
+    
+    func lookUpLocationName(clLocation: CLLocation, completionHandler: @escaping (CLPlacemark?) -> Void){
+        let geocoder = CLGeocoder()
+        
+        // Look up the location name
+        geocoder.reverseGeocodeLocation(clLocation,
+                                        completionHandler: { (placemarks, error) in
+                                            if error == nil {
+                                                let firstLocation = placemarks?[0]
+                                                print("added Pin \(self.mapView.annotations.count)")
+                                                completionHandler(firstLocation)
+                                            }
+                                            else {
+                                                // An error occurred during geocoding.
+                                                print("no string found")
+                                                completionHandler(nil)
+                                            }
+        })
+    }
+    
+    
 }
 
 
@@ -119,11 +143,29 @@ extension TravelLocationsMap: MKMapViewDelegate{
     // to the URL specified in the annotationViews subtitle property.
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            //MARK: TODO - perform segue to PhotoAlbumViewController and pass the current pin
+            //MARK: TODO - Create Predicate with Unique ID.
+            let name = view.annotation?.title
+            let lat = view.annotation?.coordinate.latitude
+            let long = view.annotation?.coordinate.longitude
+            print("name : \(name), lat: \(lat), long: \(long)")
+            let namePredicate = NSPredicate(format: "name == %@", (name ?? "")!)
+            //let latPredicate = NSPredicate(format: "latitude == %@", (lat ?? 0))
+            //let longPredicate = NSPredicate(format: "longitude == %@", (long ?? 0))
+            //let predicate = NSCompoundPredicate(type: .and, subpredicates: [namePredicate, latPredicate])
             
-            print("Move To Photo Album")
-            passedCoordinate = view.annotation?.coordinate
-            performSegue(withIdentifier: "toPhotoAlbum", sender: self)
+            //make a fetchrequest with the predicates
+            let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
+            fetchRequest.predicate = namePredicate
+            do {
+                let pin = try CoreDataPersistence.context.fetch(fetchRequest)
+                self.passedPin = pin.first
+                performSegue(withIdentifier: "toPhotoAlbum", sender: self)
+                print("Fetch Request successful. Passed Pin: \(pin.first?.name ?? "No pin")")
+            } catch let err{
+                print("\(err)")
+            }
+            
+            
         }
     }
     
@@ -149,7 +191,7 @@ extension TravelLocationsMap: MKMapViewDelegate{
             annotation = MKPointAnnotation()
             coordinates = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
             annotation.coordinate = coordinates
-            annotation.title = String(pins.count)
+            annotation.title = pin.name
             self.mapView.addAnnotation(annotation)
         }
     }
