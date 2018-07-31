@@ -21,6 +21,7 @@
 		4EAB3553210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */; };
 		4EAB3555210D1A8000C3C1BE /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3554210D1A8000C3C1BE /* GCDBlackBox.swift */; };
 		4EAB3557210FEA9900C3C1BE /* CollectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */; };
+		4EAB3559210FF4F900C3C1BE /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3558210FF4F900C3C1BE /* SpinnerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAB3554210D1A8000C3C1BE /* GCDBlackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
 		4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailViewController.swift; sourceTree = "<group>"; };
+		4EAB3558210FF4F900C3C1BE /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				4EAB3549210BBACE00C3C1BE /* PhotoAlbumCollectionViewController.swift */,
 				4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */,
 				4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */,
+				4EAB3558210FF4F900C3C1BE /* SpinnerView.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -196,6 +199,7 @@
 				4E2C6C1921067B5D008B9ECA /* Virtual_Tourist.xcdatamodeld in Sources */,
 				4E2C6C1121067B5D008B9ECA /* AppDelegate.swift in Sources */,
 				4EAB3551210C11CD00C3C1BE /* ParseJSON.swift in Sources */,
+				4EAB3559210FF4F900C3C1BE /* SpinnerView.swift in Sources */,
 				4EAB354D210C09D600C3C1BE /* FlickrClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,37 +22,40 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         print("latitude : \(pin.latitude ?? 0.0)")
         print("longitude : \(pin.longitude ?? 0.0)")
         self.navigationItem.title = pin.name
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
-        if let allImageData = pin.photos?.allObjects{
-            loadSavedImages(allImageData)
+        if let allImageData = pin.photos?.allObjects.first{
+            loadSavedImages()
             
         } else {
-        FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
-            if success{
-                print("Download Successful")
-                self.saveImages(response)
-                self.saveToCoreData()
-            } else {
-                print("Download Unsuccessful")
+            let sv = UIViewController.displaySpinner(onView: self.view)
+            FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
+                if success{
+                    print("Download Successful")
+                    self.saveImages(response)
+                    UIViewController.removeSpinner(spinner: sv)
+                    self.saveToCoreData()
+                } else {
+                    print("Download Unsuccessful")
+                    UIViewController.removeSpinner(spinner: sv)
+                }
             }
-        }
         }
     }
 
-    fileprivate func loadSavedImages(_ allImageData: [Any]) {
-        print("Contains Data with: \(allImageData.count) images")
-        for photo in allImageData{
-            let aPhoto = photo as! Photo
-            if let image = aPhoto.image {
-                arrPhoto.append(image as NSData)
+    fileprivate func loadSavedImages() {
+        if let allImageData = pin.photos?.allObjects{
+            print("Contains Data with: \(allImageData.count) images")
+            for photo in allImageData{
+                let aPhoto = photo as! Photo
+                if let image = aPhoto.image {
+                    arrPhoto.append(image as NSData)
+                }
             }
-        }
-        //Update UI
-        performUIUpdatesOnMain {
-            self.collectionView?.reloadData()
+            //Update UI
+            performUIUpdatesOnMain {
+                self.collectionView?.reloadData()
+            }
         }
     }
     
@@ -69,7 +72,6 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     //save Images to arrPhotos
     func saveImages(_ response:Response){
         for i in 0...20{
-            print(response.photos.photo[i].url_m ?? "No URL")
             
             if let urlString = response.photos.photo[i].url_m {
                 let imageURL = URL(string: urlString)
