@@ -21,21 +21,51 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         print("latitude : \(pin.latitude ?? 0.0)")
         print("longitude : \(pin.longitude ?? 0.0)")
-        self.navigationItem.title = pin?.name
+        self.navigationItem.title = pin.name
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Do any additional setup after loading the view.
+        if let allImageData = pin.photos?.allObjects{
+            loadSavedImages(allImageData)
+            
+        } else {
         FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
             if success{
                 print("Download Successful")
                 self.saveImages(response)
+                self.saveToCoreData()
             } else {
                 print("Download Unsuccessful")
             }
         }
+        }
     }
 
+    fileprivate func loadSavedImages(_ allImageData: [Any]) {
+        print("Contains Data with: \(allImageData.count) images")
+        for photo in allImageData{
+            let aPhoto = photo as! Photo
+            if let image = aPhoto.image {
+                arrPhoto.append(image as NSData)
+            }
+        }
+        //Update UI
+        performUIUpdatesOnMain {
+            self.collectionView?.reloadData()
+        }
+    }
+    
+    func saveToCoreData(){
+        for i in 0...20{
+            let photo = Photo(context: CoreDataPersistence.context)
+            photo.image = arrPhoto[i] as Data
+            pin.addToPhotos(photo)
+            CoreDataPersistence.saveContext()
+            print("Imaged Saved! : \(i)th Image")
+        }
+        
+    }
     //save Images to arrPhotos
     func saveImages(_ response:Response){
         for i in 0...20{
@@ -47,7 +77,9 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
                 //convert url into image data
                 if let imageData = try? NSData(contentsOf: imageURL!) {
                     print("appended data to array")
-                    arrPhoto.append(imageData!)
+                    if let imageData = imageData{
+                        arrPhoto.append(imageData)
+                    }
                     //Update UI
                     performUIUpdatesOnMain {
                         self.collectionView?.reloadData()
@@ -100,6 +132,12 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         cell.imageView.clipsToBounds = true
     
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailController = storyboard?.instantiateViewController(withIdentifier: "CollectionDetailViewController") as! CollectionDetailViewController
+        detailController.imageData = arrPhoto[indexPath.row] as Data
+        navigationController?.pushViewController(detailController, animated: true)
     }
 
 }

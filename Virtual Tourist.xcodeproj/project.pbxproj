@@ -20,6 +20,7 @@
 		4EAB3551210C11CD00C3C1BE /* ParseJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3550210C11CD00C3C1BE /* ParseJSON.swift */; };
 		4EAB3553210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */; };
 		4EAB3555210D1A8000C3C1BE /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3554210D1A8000C3C1BE /* GCDBlackBox.swift */; };
+		4EAB3557210FEA9900C3C1BE /* CollectionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		4EAB3550210C11CD00C3C1BE /* ParseJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseJSON.swift; sourceTree = "<group>"; };
 		4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		4EAB3554210D1A8000C3C1BE /* GCDBlackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				4E2C6C1221067B5D008B9ECA /* TravelLocationsMap.swift */,
 				4EAB3549210BBACE00C3C1BE /* PhotoAlbumCollectionViewController.swift */,
 				4EAB3552210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift */,
+				4EAB3556210FEA9900C3C1BE /* CollectionDetailViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				4EAB3553210D104700C3C1BE /* PhotoAlbumCollectionViewCell.swift in Sources */,
 				4EAB353D2108248B00C3C1BE /* CoreDataPersistence.swift in Sources */,
 				4EAB354F210C0A2100C3C1BE /* FlickrConstants.swift in Sources */,
+				4EAB3557210FEA9900C3C1BE /* CollectionDetailViewController.swift in Sources */,
 				4EAB3555210D1A8000C3C1BE /* GCDBlackBox.swift in Sources */,
 				4E2C6C1321067B5D008B9ECA /* TravelLocationsMap.swift in Sources */,
 				4EAB354A210BBACE00C3C1BE /* PhotoAlbumCollectionViewController.swift in Sources */,
