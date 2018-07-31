@@ -38,7 +38,7 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
 
     //save Images to arrPhotos
     func saveImages(_ response:Response){
-        for i in 0...15{
+        for i in 0...20{
             print(response.photos.photo[i].url_m ?? "No URL")
             
             if let urlString = response.photos.photo[i].url_m {
@@ -48,14 +48,14 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
                 if let imageData = try? NSData(contentsOf: imageURL!) {
                     print("appended data to array")
                     arrPhoto.append(imageData!)
+                    //Update UI
+                    performUIUpdatesOnMain {
+                        self.collectionView?.reloadData()
+                    }
                 }
             }
         }
         
-        //Update UI
-        performUIUpdatesOnMain {
-            self.collectionView?.reloadData()
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,7 +83,7 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return arrPhoto.count
+        return 20
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -91,7 +91,11 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     
         // Configure the cell
         
-        cell.imageView.image = UIImage(data:arrPhoto[indexPath.row] as Data)
+        if (indexPath.row + 1) <= arrPhoto.count {
+            cell.imageView.image = UIImage(data:arrPhoto[indexPath.row] as Data)
+        } else {
+            cell.imageView.image = UIImage(named: "placeholder")
+        }
         cell.imageView.layer.cornerRadius = 20
         cell.imageView.clipsToBounds = true
     
