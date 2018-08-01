@@ -148,6 +148,11 @@
                                 <action selector="cancel:" destination="DYV-aL-UdS" id="qQ6-Sh-TK1"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="MGL-Pu-OV6">
+                            <connections>
+                                <action selector="reDownloadImages:" destination="DYV-aL-UdS" id="dRE-JP-S2W"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </collectionViewController>

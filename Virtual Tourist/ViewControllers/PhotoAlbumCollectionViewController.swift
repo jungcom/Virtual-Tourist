@@ -43,6 +43,28 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         }
     }
 
+    @IBAction func reDownloadImages(_ sender: UIBarButtonItem) {
+        let sv = UIViewController.displaySpinner(onView: self.view)
+        FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
+            if success{
+                print("Download Successful")
+                self.deleteImagesInCoreData()
+                self.saveImages(response)
+                UIViewController.removeSpinner(spinner: sv)
+                self.saveToCoreData()
+            } else {
+                print("Download Unsuccessful")
+                UIViewController.removeSpinner(spinner: sv)
+            }
+        }
+    }
+    
+    func deleteImagesInCoreData(){
+        pin.removeFromPhotos(pin.photos!)
+        CoreDataPersistence.saveContext()
+        print("This pin has \(pin.photos?.count) photos")
+    }
+    
     fileprivate func loadSavedImages() {
         if let allImageData = pin.photos?.allObjects{
             print("Contains Data with: \(allImageData.count) images")
@@ -71,6 +93,8 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     }
     //save Images to arrPhotos
     func saveImages(_ response:Response){
+        arrPhoto = [NSData]()
+        
         for i in 0...20{
             
             if let urlString = response.photos.photo[i].url_m {
