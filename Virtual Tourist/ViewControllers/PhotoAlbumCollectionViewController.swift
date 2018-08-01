@@ -16,6 +16,7 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     
     var pin:Pin!
     var arrPhoto = [NSData]()
+    let numberOfImages = 0...5
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,14 +67,17 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     }
     
     fileprivate func loadSavedImages() {
-        if let allImageData = pin.photos?.allObjects{
-            print("Contains Data with: \(allImageData.count) images")
-            for photo in allImageData{
+        //////////Sort ARRAY
+        let sectionSortDescriptor = NSSortDescriptor(key: "id", ascending: true)
+        if let allSortedDataArray = pin.photos?.sortedArray(using: [sectionSortDescriptor]){
+            print("Contains Data with: \(allSortedDataArray.count) images")
+            for photo in allSortedDataArray{
                 let aPhoto = photo as! Photo
                 if let image = aPhoto.image {
                     arrPhoto.append(image as NSData)
                 }
             }
+            
             //Update UI
             performUIUpdatesOnMain {
                 self.collectionView?.reloadData()
@@ -82,20 +86,24 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     }
     
     func saveToCoreData(){
-        for i in 0...20{
+        //Saves ArrPhoto to the Core Data Stack
+        for i in numberOfImages{
             let photo = Photo(context: CoreDataPersistence.context)
             photo.image = arrPhoto[i] as Data
+            // ID for Sorting
+            photo.id = Int16(i)
+            
             pin.addToPhotos(photo)
             CoreDataPersistence.saveContext()
-            print("Imaged Saved! : \(i)th Image")
         }
         
     }
     //save Images to arrPhotos
     func saveImages(_ response:Response){
+        //delete current Images in current pin
         arrPhoto = [NSData]()
         
-        for i in 0...20{
+        for i in numberOfImages{
             
             if let urlString = response.photos.photo[i].url_m {
                 let imageURL = URL(string: urlString)
