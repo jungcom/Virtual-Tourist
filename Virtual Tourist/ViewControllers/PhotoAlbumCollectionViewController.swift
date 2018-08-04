@@ -110,7 +110,8 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
             
             maxSize = response.photos.photo.count
             if i < maxSize {
-                if let urlString = response.photos.photo[i].url_m {
+                let randomN = arc4random_uniform(UInt32(maxSize))
+                if let urlString = response.photos.photo[Int(randomN)].url_m {
                     let imageURL = URL(string: urlString)
                 
                     //convert url into image data
