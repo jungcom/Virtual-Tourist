@@ -16,7 +16,8 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     
     var pin:Pin!
     var arrPhoto = [NSData]()
-    let numberOfImages = 0...5
+    let numberOfImages = 0...20
+    var maxSize = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +89,7 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     func saveToCoreData(){
         //Saves ArrPhoto to the Core Data Stack
         for i in numberOfImages{
+            if i < maxSize{
             let photo = Photo(context: CoreDataPersistence.context)
             photo.image = arrPhoto[i] as Data
             // ID for Sorting
@@ -95,6 +97,7 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
             
             pin.addToPhotos(photo)
             CoreDataPersistence.saveContext()
+            }
         }
         
     }
@@ -105,18 +108,21 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
         
         for i in numberOfImages{
             
-            if let urlString = response.photos.photo[i].url_m {
-                let imageURL = URL(string: urlString)
+            maxSize = response.photos.photo.count
+            if i < maxSize {
+                if let urlString = response.photos.photo[i].url_m {
+                    let imageURL = URL(string: urlString)
                 
-                //convert url into image data
-                if let imageData = try? NSData(contentsOf: imageURL!) {
-                    print("appended data to array")
-                    if let imageData = imageData{
+                    //convert url into image data
+                    if let imageData = try? NSData(contentsOf: imageURL!) {
+                        print("appended data to array")
+                        if let imageData = imageData{
                         arrPhoto.append(imageData)
-                    }
-                    //Update UI
-                    performUIUpdatesOnMain {
-                        self.collectionView?.reloadData()
+                        }
+                        //Update UI
+                        performUIUpdatesOnMain {
+                            self.collectionView?.reloadData()
+                        }
                     }
                 }
             }
