@@ -16,8 +16,10 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     
     var pin:Pin!
     var arrPhoto = [NSData]()
+    var refToPhotoForDelete = [Photo]()
     let numberOfImages = 0...20
     var maxSize = 0
+    var downloading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,33 +32,34 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
             loadSavedImages()
             
         } else {
-            let sv = UIViewController.displaySpinner(onView: self.view)
+            downloading = true
             FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
                 if success{
                     print("Download Successful")
                     self.saveImages(response)
-                    UIViewController.removeSpinner(spinner: sv)
+                    
                     self.saveToCoreData()
+                    self.downloading = false
                 } else {
                     print("Download Unsuccessful")
-                    UIViewController.removeSpinner(spinner: sv)
+                    self.downloading = false
+                    
                 }
             }
         }
     }
 
     @IBAction func reDownloadImages(_ sender: UIBarButtonItem) {
-        let sv = UIViewController.displaySpinner(onView: self.view)
         FlickrClient.sharedInstance().downloadImages(longitude: pin.longitude, latitude: pin.latitude) { (success, response, err) in
             if success{
                 print("Download Successful")
                 self.deleteImagesInCoreData()
                 self.saveImages(response)
-                UIViewController.removeSpinner(spinner: sv)
+                
                 self.saveToCoreData()
             } else {
                 print("Download Unsuccessful")
-                UIViewController.removeSpinner(spinner: sv)
+                
             }
         }
     }
@@ -96,6 +99,10 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
             photo.id = Int16(i)
             
             pin.addToPhotos(photo)
+                
+            //reference of the photos object for later deletion
+            refToPhotoForDelete.append(photo)
+                
             CoreDataPersistence.saveContext()
             }
         }
@@ -156,7 +163,11 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 20
+        if downloading{
+            return 20
+        }else{
+            return arrPhoto.count
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -176,9 +187,33 @@ class PhotoAlbumCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailController = storyboard?.instantiateViewController(withIdentifier: "CollectionDetailViewController") as! CollectionDetailViewController
-        detailController.imageData = arrPhoto[indexPath.row] as Data
-        navigationController?.pushViewController(detailController, animated: true)
+        performUIUpdatesOnMain {
+            self.collectionView?.reloadData()
+        }
+        let alertController = UIAlertController(title: "View Or Delete?", message:
+            "Would you like to view or delete the image?", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "View", style: UIAlertActionStyle.default,handler: {(action) in
+            let detailController = self.storyboard?.instantiateViewController(withIdentifier: "CollectionDetailViewController") as! CollectionDetailViewController
+            detailController.imageData = self.arrPhoto[indexPath.row] as Data
+            self.navigationController?.pushViewController(detailController, animated: true)
+        }))
+        alertController.addAction(UIAlertAction(title: "Delete", style: UIAlertActionStyle.default,handler: {(action) in
+            //Delete selected image from UI and CoreData
+
+            //Delete from Core Data
+            let photo = self.refToPhotoForDelete[indexPath.row]
+            CoreDataPersistence.context.delete(photo)
+            CoreDataPersistence.saveContext()
+            
+ 
+            //Delete from UI
+            self.arrPhoto.remove(at: indexPath.row)
+            self.refToPhotoForDelete.remove(at: indexPath.row)
+            self.collectionView?.deleteItems(at: [indexPath])
+            
+        }))
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }

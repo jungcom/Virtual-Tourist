@@ -122,9 +122,11 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DKs-3r-yXc">
                                             <rect key="frame" x="13" y="13" width="106" height="112"/>
+                                            <gestureRecognizers/>
                                         </imageView>
                                     </subviews>
                                 </view>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="DKs-3r-yXc" secondAttribute="bottom" id="AxG-qt-zcI"/>
                                     <constraint firstItem="DKs-3r-yXc" firstAttribute="leading" secondItem="3Tn-DE-3FR" secondAttribute="leading" constant="13" id="ZDR-QW-9je"/>
